@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Script Database</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800&family=Inter:wght@400;500;600&display=swap">
+<style>
+:root{--bg:#fbf9f6;--card:#fff;--ink:#1f1a19;--mute:#756a65;--line:#e9e2da;--acc:#9b2c3a;--acc2:#c9892f;--accink:#fff;--sh:0 1px 2px rgba(0,0,0,.05),0 6px 20px rgba(60,30,20,.06);box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#161211;--card:#201a19;--ink:#f3ebe6;--mute:#a99c95;--line:#352c2a;--acc:#e07784;--acc2:#e3ad5f;--accink:#161211;--sh:0 1px 2px rgba(0,0,0,.4)}}
+:root[data-theme="dark"]{--bg:#161211;--card:#201a19;--ink:#f3ebe6;--mute:#a99c95;--line:#352c2a;--acc:#e07784;--acc2:#e3ad5f;--accink:#161211;--sh:0 1px 2px rgba(0,0,0,.4)}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 Inter,system-ui,-apple-system,Segoe UI,sans-serif}
+h1,h2,h3,.serif{font-family:Fraunces,Georgia,serif;letter-spacing:-.01em}
+button,input,select,textarea{font:inherit;color:inherit}
+a{color:inherit}
+nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.nav{max-width:1080px;margin:0 auto;padding:10px 16px;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.logo{font:800 1.25rem Fraunces,Georgia,serif;margin-right:auto;cursor:pointer;display:flex;gap:8px;align-items:center}
+.logo i{font-style:normal;background:var(--acc);color:var(--accink);border-radius:8px;padding:0 7px}
+.lnk{background:none;border:0;padding:6px 10px;border-radius:99px;cursor:pointer;color:var(--mute);font-weight:500}
+.lnk:hover,.lnk.on{color:var(--ink);background:var(--line)}
+.btn{background:var(--acc);color:var(--accink);border:0;border-radius:99px;padding:8px 16px;cursor:pointer;font-weight:600}
+.btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
+.btn.danger{background:transparent;color:var(--acc);border:1px solid var(--acc)}
+.wrap{max-width:1080px;margin:0 auto;padding:20px 16px 70px}
+.hero{padding:40px 0 22px;text-align:center}
+.hero h1{font-size:clamp(2rem,6vw,3.3rem);margin:0 0 8px;line-height:1.08}
+.hero p{color:var(--mute);margin:0 auto 22px;max-width:520px}
+.search{display:flex;max-width:600px;margin:0 auto;background:var(--card);border:1px solid var(--line);border-radius:99px;box-shadow:var(--sh);overflow:hidden}
+.search input{flex:1;border:0;background:none;padding:14px 20px;outline:none;min-width:0}
+.search button{border-radius:0;padding:0 22px}
+.az{display:flex;flex-wrap:wrap;gap:4px;justify-content:center;margin:22px 0 6px}
+.az button{width:32px;height:32px;border:1px solid var(--line);background:var(--card);border-radius:8px;cursor:pointer;font-weight:600;font-size:.82rem}
+.az button:hover,.az button.on{background:var(--acc);color:var(--accink);border-color:var(--acc)}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{border:1px solid var(--line);background:var(--card);border-radius:99px;padding:5px 13px;cursor:pointer;font-size:.86rem}
+.chip:hover,.chip.on{border-color:var(--acc);color:var(--acc)}
+.chip.on{background:color-mix(in srgb,var(--acc) 12%,transparent)}
+.sec{display:flex;justify-content:space-between;align-items:baseline;margin:34px 0 12px}
+.sec h2{margin:0;font-size:1.35rem}
+.sec a{color:var(--acc);cursor:pointer;font-size:.9rem;font-weight:500}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:16px}
+.card{cursor:pointer}
+.cover{aspect-ratio:3/4;border-radius:10px;padding:14px;display:flex;flex-direction:column;justify-content:space-between;color:#fff;box-shadow:var(--sh);transition:transform .15s;position:relative;overflow:hidden}
+.card:hover .cover{transform:translateY(-4px)}
+.cover b{font:800 1.05rem/1.15 Fraunces,Georgia,serif;word-break:break-word}
+.cover span{font-size:.7rem;text-transform:uppercase;letter-spacing:.08em;opacity:.85}
+.card .t{font-weight:600;margin-top:8px;line-height:1.25}
+.meta{color:var(--mute);font-size:.85rem}
+.tag{display:inline-block;font-size:.76rem;border:1px solid var(--line);border-radius:99px;padding:1px 9px;margin:0 4px 4px 0;color:var(--mute);background:var(--card)}
+.layout{display:grid;grid-template-columns:210px 1fr;gap:28px}
+@media(max-width:760px){.layout{grid-template-columns:1fr}}
+.side h4{margin:0 0 8px;font-size:.78rem;text-transform:uppercase;letter-spacing:.08em;color:var(--mute)}
+.side>div{margin-bottom:22px}
+.tools{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;align-items:center}
+.tools input,.tools select,form input,form select,form textarea{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:9px 12px;max-width:100%}
+.tools input{flex:1 1 200px}
+.row{display:flex;gap:14px;padding:12px 0;border-bottom:1px solid var(--line);cursor:pointer;align-items:center}
+.row:hover .rt{color:var(--acc)}
+.dot{width:42px;height:56px;border-radius:6px;flex:none}
+.rt{font-weight:600}
+.detail{display:grid;grid-template-columns:230px 1fr;gap:30px;margin-top:10px}
+@media(max-width:700px){.detail{grid-template-columns:1fr}.detail .cover{max-width:230px}}
+.detail h1{margin:0;font-size:2.1rem;line-height:1.1}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;box-shadow:var(--sh)}
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:10px;margin:16px 0}
+.facts div{background:var(--bg);border-radius:10px;padding:10px 12px}
+.facts b{display:block;font-size:1.1rem}
+.reader{max-width:680px;margin:0 auto}
+.rtool{position:sticky;top:calc(env(safe-area-inset-top,0px) + 52px);z-index:4;background:var(--bg);padding:10px 0;display:flex;gap:8px;align-items:center;flex-wrap:wrap;border-bottom:1px solid var(--line)}
+.prog{height:3px;background:var(--acc);width:0;position:fixed;top:env(safe-area-inset-top,0px);left:0;z-index:9}
+.script{white-space:pre-wrap;word-break:break-word;padding:28px 0;font-family:'Courier New',Courier,monospace;font-size:15px;line-height:1.7}
+.script.serif{font-family:Georgia,serif;font-size:17px}
+form{display:grid;gap:14px}
+form label{display:grid;gap:5px;font-size:.85rem;color:var(--mute);font-weight:500}
+.fr{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
+.chk{display:flex!important;gap:8px;align-items:flex-start;color:var(--ink)!important}
+.note{border:1px dashed var(--line);border-radius:10px;padding:12px;color:var(--mute);font-size:.88rem;margin-top:20px}
+.empty{text-align:center;color:var(--mute);padding:50px 0}
+footer{text-align:center;color:var(--mute);font-size:.82rem;margin-top:50px}
+</style>
+</head>
+<body>
+<div class="prog" id="prog"></div>
+<nav><div class="nav">
+  <div class="logo" id="home"><i>S</i>Script Database</div>
+  <button class="lnk" data-go="browse">Browse</button>
+  <button class="lnk" data-go="genres">Genres</button>
+  <button class="btn" id="upBtn">+ Upload</button>
+</div></nav>
+<div class="wrap"><main id="main"></main><div class="note" id="notice" hidden></div>
+<footer>Scripts are shared by members. Only upload work you own or that is in the public domain.</footer></div>
+<script>
+const GENRES=["Drama","Comedy","Tragedy","Musical","One-act","Monologue","Farce","Classic","Experimental","Children's","Historical","Romance"];
+const LICENSES=["Public domain","Creative Commons","All rights reserved (contact author)"];
+const PAL=[["#9b2c3a","#5a1a2c"],["#2c5f8a","#1a2f5a"],["#2f7a5f","#173f3a"],["#b36a1f","#6a3416"],["#6b3f8f","#38245c"],["#8a2c6a","#4a1a46"],["#3f6b3f","#1f3d2a"],["#a1473a","#5c2a20"]];
+let scripts=[],view={page:"home"},F={q:"",genre:"",letter:"",sort:"az"},db=null,col=null,dl=null,me=null,names={},serif=false,fz=15;
+const $=s=>document.querySelector(s),main=$("#main");
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const sk=t=>String(t).replace(/^(the|a|an)\s+/i,"").trim().toLowerCase();
+const letterOf=t=>{const c=sk(t)[0]||"#";return/[a-z]/.test(c)?c.toUpperCase():"#"};
+const hue=t=>{let h=0;for(const c of t)h=(h*31+c.charCodeAt(0))>>>0;return PAL[h%PAL.length]};
+const gens=s=>s.genres||(s.genre?[s.genre]:[]);
+const cover=s=>{const[a,b]=hue(s.title);return`<div class="cover" style="background:linear-gradient(155deg,${a},${b})"><span>${esc(gens(s)[0]||"Play")}</span><b>${esc(s.title)}</b><span>${esc(s.author)}</span></div>`};
+const go=(v)=>{view=v;render();scrollTo(0,0)};
+const card=s=>`<div class="card" data-id="${esc(s.id)}">${cover(s)}<div class="t">${esc(s.title)}</div><div class="meta">${esc(s.author)}</div></div>`;
+const bind=()=>main.querySelectorAll("[data-id]").forEach(c=>c.onclick=()=>go({page:"detail",id:c.dataset.id}));
+const azBar=()=>`<div class="az">${[..."ABCDEFGHIJKLMNOPQRSTUVWXYZ#"].map(l=>`<button data-l="${l}" class="${F.letter===l?"on":""}">${l}</button>`).join("")}</div>`;
+const bindAz=()=>main.querySelectorAll("[data-l]").forEach(b=>b.onclick=()=>{F={q:"",genre:"",letter:b.dataset.l,sort:"az"};go({page:"browse"})});
+const bindGenre=()=>main.querySelectorAll("[data-g]").forEach(b=>b.onclick=()=>{F={q:"",genre:F.genre===b.dataset.g&&view.page==="browse"?"":b.dataset.g,letter:"",sort:"az"};go({page:"browse"})});
+const gcount=g=>scripts.filter(s=>gens(s).includes(g)).length;
+
+function render(){
+  document.querySelectorAll(".lnk").forEach(b=>b.classList.toggle("on",b.dataset.go===view.page));
+  $("#prog").style.width=0;
+  ({home,browse,genres,detail,reader,upload}[view.page]||home)();
+}
+function home(){
+  const pop=[...scripts].sort((a,b)=>(b.downloads||0)-(a.downloads||0)).slice(0,6);
+  const nu=[...scripts].sort((a,b)=>(b.created||0)-(a.created||0)).slice(0,6);
+  main.innerHTML=`<div class="hero"><h1>Every play,<br>one stage.</h1><p>Read, share and download scripts from playwrights around the world. Free to browse.</p>
+  <form class="search" id="sf"><input id="hq" placeholder="Search by title, playwright or genre…"><button class="btn">Search</button></form>${azBar()}</div>
+  <div class="chips" style="justify-content:center">${GENRES.map(g=>`<span class="chip" data-g="${g}">${g}</span>`).join("")}</div>
+  ${scripts.length?`<div class="sec"><h2>Popular scripts</h2><a id="m1">Browse all →</a></div><div class="grid">${pop.map(card).join("")}</div>
+  <div class="sec"><h2>Newly added</h2></div><div class="grid">${nu.map(card).join("")}</div>`:`<div class="empty">${db?"The library is empty. Upload the first script!":"Loading…"}</div>`}`;
+  $("#sf").onsubmit=e=>{e.preventDefault();F={q:$("#hq").value,genre:"",letter:"",sort:"az"};go({page:"browse"})};
+  const m=$("#m1");if(m)m.onclick=()=>{F={q:"",genre:"",letter:"",sort:"az"};go({page:"browse"})};
+  bind();bindAz();bindGenre();
+}
+function browse(){
+  const q=F.q.toLowerCase();
+  let l=scripts.filter(s=>(!F.genre||gens(s).includes(F.genre))&&(!F.letter||letterOf(s.title)===F.letter)&&
+    (!q||[s.title,s.author,s.synopsis,gens(s).join(" ")].join(" ").toLowerCase().includes(q)));
+  l.sort(F.sort==="new"?(a,b)=>(b.created||0)-(a.created||0):F.sort==="pop"?(a,b)=>(b.downloads||0)-(a.downloads||0):(a,b)=>sk(a.title).localeCompare(sk(b.title)));
+  main.innerHTML=`<div class="layout" style="margin-top:14px"><aside class="side">
+   <div><h4>Genres</h4><div class="chips">${GENRES.map(g=>`<span class="chip ${F.genre===g?"on":""}" data-g="${g}">${g} <small>${gcount(g)}</small></span>`).join("")}</div></div>
+   <div><h4>Title starts with</h4>${azBar().replace('class="az"','class="az" style="justify-content:flex-start;margin:0"')}</div></aside>
+   <section><div class="tools"><input id="q" type="search" placeholder="Search scripts…" value="${esc(F.q)}">
+   <select id="so"><option value="az" ${F.sort==="az"?"selected":""}>A–Z</option><option value="new" ${F.sort==="new"?"selected":""}>Newest</option><option value="pop" ${F.sort==="pop"?"selected":""}>Most downloaded</option></select></div>
+   <p class="meta">${l.length} script${l.length===1?"":"s"}${F.genre?" in "+esc(F.genre):""}${F.letter?" starting with "+esc(F.letter):""} ${(F.genre||F.letter||F.q)?'· <a href="#" id="clr" style="color:var(--acc)">clear filters</a>':""}</p>
+   ${l.length?l.map(s=>{const[a,b]=hue(s.title);return`<div class="row" data-id="${esc(s.id)}"><div class="dot" style="background:linear-gradient(155deg,${a},${b})"></div><div style="flex:1;min-width:0"><div class="rt">${esc(s.title)}</div><div class="meta">${esc(s.author)} · ${esc(s.cast)} cast · ${esc(s.minutes)} min</div><div>${gens(s).map(g=>`<span class="tag">${esc(g)}</span>`).join("")}</div></div></div>`}).join(""):'<div class="empty">No scripts match.</div>'}</section></div>`;
+  $("#q").oninput=e=>{F.q=e.target.value;const p=e.target.selectionStart;browse();const i=$("#q");i.focus();i.setSelectionRange(p,p)};
+  $("#so").onchange=e=>{F.sort=e.target.value;browse()};
+  const c=$("#clr");if(c)c.onclick=e=>{e.preventDefault();F={q:"",genre:"",letter:"",sort:F.sort};browse()};
+  main.querySelectorAll("[data-l]").forEach(b=>b.onclick=()=>{F.letter=F.letter===b.dataset.l?"":b.dataset.l;browse()});
+  main.querySelectorAll("[data-g]").forEach(b=>b.onclick=()=>{F.genre=F.genre===b.dataset.g?"":b.dataset.g;browse()});
+  bind();
+}
+function genres(){
+  main.innerHTML=`<div class="sec"><h2>Browse by genre</h2></div><div class="grid" style="grid-template-columns:repeat(auto-fill,minmax(200px,1fr))">${GENRES.map(g=>{const[a,b]=hue(g);return`<div class="panel card" data-g="${g}" style="background:linear-gradient(155deg,${a},${b});color:#fff;border:0"><h3 style="margin:0">${g}</h3><div style="opacity:.8">${gcount(g)} script${gcount(g)===1?"":"s"}</div></div>`}).join("")}</div>`;
+  bindGenre();
+}
+function detail(){
+  const s=scripts.find(x=>x.id===view.id);if(!s)return go({page:"home"});
+  const mine=me&&s.uploader===me,has=!!(s.text||"").trim();
+  main.innerHTML=`<p><button class="btn ghost" id="back">← Back</button></p><div class="detail"><div>${cover(s)}</div><div>
+  <h1>${esc(s.title)}</h1><p class="meta" style="font-size:1rem">by ${esc(s.author)}${s.year?" · "+esc(s.year):""}</p>
+  <div>${gens(s).map(g=>`<span class="tag">${esc(g)}</span>`).join("")}</div>
+  <div class="facts"><div><b>${esc(s.cast)}</b>cast</div><div><b>${esc(s.minutes)} min</b>running time</div><div><b>${esc(s.downloads||0)}</b>downloads</div></div>
+  <p>${esc(s.synopsis)}</p><p class="meta">License: ${esc(s.license)} · Added by ${esc(names[s.uploader]||(s.uploader==="catalog"?"the catalog":"a member"))}</p>
+  <p><button class="btn" id="rd" ${has?"":"disabled"}>Read script</button> <button class="btn ghost" id="dl" ${has?"":"disabled"}>Download</button> ${mine?'<button class="btn danger" id="del">Delete</button>':""}</p>
+  ${has?"":'<p class="meta">The full text of this listing hasn\'t been uploaded yet.</p>'}</div></div>`;
+  $("#back").onclick=()=>go({page:"browse"});
+  $("#rd").onclick=()=>go({page:"reader",id:s.id});
+  $("#dl").onclick=()=>save(s);
+  if(mine)$("#del").onclick=async()=>{if(confirm("Delete this script?")){await col.doc(s.id).delete();go({page:"browse"})}};
+}
+async function save(s){
+  if(!dl)return alert("Downloads aren't available in this view.");
+  try{await dl.save({filename:(s.title.replace(/[^\w]+/g,"_")||"script")+".txt",data:s.text||""});col.doc(s.id).update({downloads:(s.downloads||0)+1}).catch(()=>{})}catch(e){}
+}
+function reader(){
+  const s=scripts.find(x=>x.id===view.id);if(!s)return go({page:"home"});
+  main.innerHTML=`<div class="reader"><div class="rtool"><button class="btn ghost" id="back">← ${esc(s.title)}</button><span style="flex:1"></span>
+  <button class="chip" id="fm">${serif?"Monospace":"Serif"}</button><button class="chip" id="m">A−</button><button class="chip" id="p">A+</button><button class="chip" id="d">Download</button></div>
+  <div class="script ${serif?"serif":""}" id="sc" style="font-size:${fz}px">${esc(s.text)}</div></div>`;
+  $("#back").onclick=()=>go({page:"detail",id:s.id});
+  $("#fm").onclick=()=>{serif=!serif;reader()};
+  $("#m").onclick=()=>{fz=Math.max(12,fz-1);$("#sc").style.fontSize=fz+"px"};
+  $("#p").onclick=()=>{fz=Math.min(26,fz+1);$("#sc").style.fontSize=fz+"px"};
+  $("#d").onclick=()=>save(s);
+}
+addEventListener("scroll",()=>{if(view.page!=="reader")return;const h=document.documentElement;$("#prog").style.width=(h.scrollTop/(h.scrollHeight-h.clientHeight||1)*100)+"%"});
+function upload(){
+  main.innerHTML=`<p><button class="btn ghost" id="back">← Back</button></p><div class="panel" style="max-width:720px"><h2 style="margin-top:0">Upload a script</h2>
+  <form id="uf"><div class="fr"><label>Title<input name="title" required maxlength="120"></label><label>Playwright<input name="author" required maxlength="120"></label></div>
+  <label>Genres (choose any)<div class="chips">${GENRES.map(g=>`<label class="chip chk"><input type="checkbox" name="g" value="${g}"> ${g}</label>`).join("")}</div></label>
+  <div class="fr"><label>Cast size<input name="cast" type="number" min="1" max="99" value="3" required></label><label>Running time (min)<input name="minutes" type="number" min="1" max="600" value="90" required></label><label>Year<input name="year" type="number" min="-500" max="2100" placeholder="optional"></label></div>
+  <label>Synopsis<textarea name="synopsis" rows="3" maxlength="800" required></textarea></label>
+  <label>License<select name="license">${LICENSES.map(l=>`<option>${l}</option>`).join("")}</select></label>
+  <label>Script file (.txt, .md, .fountain), or paste below<input type="file" id="file" accept=".txt,.md,.fountain,text/plain"></label>
+  <label>Script text<textarea name="text" rows="8" required></textarea></label>
+  <label class="chk"><input type="checkbox" required> I own the rights to this script, or it is in the public domain, and I have the right to share it here.</label>
+  <div><button class="btn" type="submit">Publish script</button></div></form></div>`;
+  $("#back").onclick=()=>go({page:"browse"});
+  $("#file").onchange=async e=>{const f=e.target.files[0];if(!f)return;if(f.size>200000){alert("Please keep files under 200 KB for now.");e.target.value="";return}$("#uf").elements.text.value=await f.text()};
+  $("#uf").onsubmit=async e=>{e.preventDefault();if(!col)return alert("Sign in to upload scripts.");
+    const fd=new FormData(e.target),d={title:fd.get("title"),author:fd.get("author"),genres:fd.getAll("g"),cast:+fd.get("cast"),minutes:+fd.get("minutes"),synopsis:fd.get("synopsis"),license:fd.get("license"),text:fd.get("text"),uploader:me,created:Date.now(),downloads:0};
+    if(fd.get("year"))d.year=+fd.get("year");
+    try{await col.add(d);go({page:"browse"})}catch(err){alert("Couldn't save: "+(err.message||err.code))}};
+}
+$("#home").onclick=()=>{F={q:"",genre:"",letter:"",sort:"az"};go({page:"home"})};
+document.querySelectorAll(".lnk").forEach(b=>b.onclick=()=>go({page:b.dataset.go}));
+$("#upBtn").onclick=()=>go({page:"upload"});
+render();
+(async()=>{try{
+  const user=await claude.use("user");
+  if(user){me=await user.id();const p=await user.profiles([me]);names[me]=p[me]?.name||"you"}
+  dl=await claude.use("downloads");db=await claude.use("db");
+  if(db){col=db.collection("scripts");
+    col.orderBy("created","desc").onSnapshot(async snap=>{
+      scripts=snap.docs.map(d=>({id:d.id,...d.data()}));
+      const ids=[...new Set(scripts.map(s=>s.uploader).filter(i=>i&&i!=="catalog"&&!names[i]))];
+      if(user&&ids.length){try{const p=await user.profiles(ids);ids.forEach(i=>names[i]=p[i]?.name||"")}catch(e){}}
+      if(view.page!=="upload")render()},()=>{});
+  }else{const n=$("#notice");n.hidden=false;n.textContent="Sign in to claude.ai to browse and upload scripts."}
+}catch(e){}})();
+</script>
+</body>
+</html>
